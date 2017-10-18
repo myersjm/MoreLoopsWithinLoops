@@ -3,8 +3,9 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of SEQUENCES OF SUB-SEQUENCES.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Jessica Myers.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
+import cmath
 
 
 def main():
@@ -17,7 +18,7 @@ def main():
 def run_test_largest_number():
     """ Tests the    largest_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 2. Implement this TEST function.
+    # DONE: 2. Implement this TEST function.
     #   It TESTS the  largest_number  function defined below.
     #   Include at least ** 1 ** ADDITIONAL test beyond those we wrote.
     # ------------------------------------------------------------------
@@ -44,6 +45,10 @@ def run_test_largest_number():
     print('Expected and actual are:', expected, answer)
 
     # TO DO 2 (continued): Add your ADDITIONAL test(s) here:
+    # Test 4:
+    expected = 1
+    answer = largest_number(([1, 0], [0, -222], [0, 0, 0, -1]))
+    print('Expected and actual are:', expected, answer)
 
 
 def largest_number(seq_seq):
@@ -72,15 +77,26 @@ def largest_number(seq_seq):
     where each subsequence contains only numbers.
     """
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     # ------------------------------------------------------------------
+    largest = None
+    for h in range(len(seq_seq)):
+        if len(seq_seq) > 0:
+            if len(seq_seq[h]) > 0 and largest == None:
+                largest = seq_seq[h][0]
+            if largest != None:
+                for k in range(len(seq_seq)):
+                    for j in range(len(seq_seq[k])):
+                        if seq_seq[k][j] > largest:
+                            largest = seq_seq[k][j]
+    return largest
 
 
 def run_test_largest_negative_number():
     """ Tests the    largest_negative_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 4. Implement this TEST function.
+    # DONE: 4. Implement this TEST function.
     #   It TESTS the  largest_negative_number  function defined below.
     #
     #   Include enough tests to give you confidence that your solution
@@ -91,6 +107,46 @@ def run_test_largest_negative_number():
     print('Testing the   LARGEST_NEGATIVE_NUMBER   function:')
     print('-------------------------------------------------')
 
+    #Test 1
+    expected = -2.6
+    actual = largest_negative_number([(30, -5, 8, -20), (100, -2.6, 88, -40, -5), (400, 500)])
+    print("expected: ", expected)
+    print("actual: ", actual)
+    if expected != actual:
+        print("FAILURE")
+    else:
+        print("SUCCESS")
+
+    # Test 2
+    expected = None
+    actual = largest_negative_number([(200, 2, 20), (500, 400)])
+    print("expected: ", expected)
+    print("actual: ", actual)
+    if expected != actual:
+        print("FAILURE")
+    else:
+        print("SUCCESS")
+
+    # Test 3
+    expected = -1
+    actual = largest_negative_number([(), (0, 2, 20), (500, 400, -333), (-1, 3)])
+    print("expected: ", expected)
+    print("actual: ", actual)
+    if expected != actual:
+        print("FAILURE")
+    else:
+        print("SUCCESS")
+
+    # Test 4
+    expected = -1
+    actual = largest_negative_number([(), (0, 5), (-1, -2, -3, -4, -1), (3, 0, -900)])
+    print("expected: ", expected)
+    print("actual: ", actual)
+    if expected != actual:
+        print("FAILURE")
+    else:
+        print("SUCCESS")
+
 
 def largest_negative_number(seq_seq):
     """
@@ -100,7 +156,7 @@ def largest_negative_number(seq_seq):
 
     For example, if the given argument is:
         [(30, -5, 8, -20),
-         (100, -2.6, 88, -40, -5),
+         (100, -2.6, 88, -40, -5), most positive negative number
          (400, 500)
         ]
     then this function returns -2.6.
@@ -115,13 +171,22 @@ def largest_negative_number(seq_seq):
     where each subsequence contains only numbers.
     """
     # ------------------------------------------------------------------
-    # TODO: 5. Implement and test this function.
+    # DONE: 5. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     #
     # CHALLENGE: Try to solve this problem with no additional sequences
     #   being constructed (so the SPACE allowed is limited to the
     #   give sequence of sequences plus any non-list variables you want).
     # ------------------------------------------------------------------
+    largest = -cmath.inf
+    for h in range(len(seq_seq)):
+        if len(seq_seq) > 0 and len(seq_seq[h]) > 0:  #loops until finds subsequence of length > 0
+            for k in range(len(seq_seq[h])):
+                    if seq_seq[h][k] > largest and seq_seq[h][k] < 0:
+                        largest = seq_seq[h][k]
+    if largest == -cmath.inf:
+        return None
+    return largest
 
 
 def run_test_first_is_elsewhere_too():
@@ -370,6 +435,20 @@ def first_is_elsewhere_too(seq_seq):
     #   in this problem, as doing so would defeat the goal of providing
     #   practice at loops within loops (within loops within ...)
     # ------------------------------------------------------------------
+    for o in range(len(seq_seq)):
+        counter = 1
+        for k in range(len(seq_seq)):   #NOTE k may be changing look for each loop put in if statement
+            times_looped = 0
+            if len(seq_seq) > 0 and len(seq_seq[k]) > 0 and type(seq_seq[k][0]) is int:
+                times_looped = times_looped + 1
+                if times_looped == 1:                   #MAKE SURE seq of 0 is an int, apparently some are char
+                    print(seq_seq, "is sequence.!!! and k is ", k)
+                    look_for = seq_seq[k][counter]  #move on to next k in subseq
+                for h in range(len(seq_seq[k])):    #check if subseq has it
+                    if seq_seq[k][h] == look_for and h != counter:
+                        return True
+        counter = counter + 1
+    return False
 
 
 # ----------------------------------------------------------------------
